@@ -1,3 +1,3 @@
-module design_pattern
+module gof
 
 go 1.15
