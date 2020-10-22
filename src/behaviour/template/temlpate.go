@@ -2,56 +2,67 @@ package main
 
 import "fmt"
 
-type IPerson interface {
-	SetName(name string)
-	BeforeOut()
-	Out()
+type AbstractClass interface {
+	TemplateMethod()
+	SpecificMethod()
+	AbstractMethod1()
+	AbstractMethod2()
 }
-type Person struct {
-	Specific IPerson
-	name     string
-}
-
-func (p *Person) SetName(name string) {
-	p.name = name
+type ConcreteClass struct {
+	Specific AbstractClass
 }
 
-func (p *Person) Out() {
-	p.BeforeOut()
-	fmt.Println(p.name + " go out...")
-}
-
-func (p *Person) BeforeOut() {
-	if p.Specific == nil {
+func (cc *ConcreteClass) AbstractMethod1() {
+	if cc.Specific == nil {
 		return
 	}
+	cc.Specific.AbstractMethod1()
+}
+func (cc *ConcreteClass) AbstractMethod2() {
+	if cc.Specific == nil {
+		return
+	}
+	cc.Specific.AbstractMethod2()
 
-	p.Specific.BeforeOut()
+}
+func (cc *ConcreteClass) SpecificMethod() {
+	fmt.Println("running specificMethod")
+}
+func (cc *ConcreteClass) TemplateMethod() {
+	cc.SpecificMethod()
+	cc.AbstractMethod1()
+	cc.AbstractMethod2()
 }
 
-type Boy struct {
-	Person
+type ConcreteA struct {
+	ConcreteClass
 }
 
-func (_ *Boy) BeforeOut() {
-	fmt.Println("get up..")
+func (_ *ConcreteA) AbstractMethod1() {
+	fmt.Println("running abstract method 1 of concretA..")
+}
+func (_ *ConcreteA) AbstractMethod2() {
+	fmt.Println("running abstract method 2 of concretA..")
 }
 
-type Girl struct {
-	Person
+type ConcreteB struct {
+	ConcreteClass
 }
 
-func (_ *Girl) BeforeOut() {
-	fmt.Println("dress up..")
+func (_ *ConcreteB) AbstractMethod1() {
+	fmt.Println("running abstract method 1 of concretB..")
 }
+func (_ *ConcreteB) AbstractMethod2() {
+	fmt.Println("running abstract method 2 of concretB..")
+}
+
 func main() {
-	var p *Person = &Person{}
-
-	p.Specific = &Boy{}
-	p.SetName("Tony")
-	p.Out()
-
-	p.Specific = &Girl{}
-	p.SetName("Lily")
-	p.Out()
+	var p *ConcreteClass = &ConcreteClass{}
+	fmt.Println("the object is A")
+	p.Specific = &ConcreteA{}
+	p.TemplateMethod()
+	fmt.Println("=========================")
+	fmt.Println("the object is B")
+	p.Specific = &ConcreteB{}
+	p.TemplateMethod()
 }
