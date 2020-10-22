@@ -41,7 +41,7 @@ func (handBag HandBag) Kind() string {
 type Bag interface {
 	SetColor(color Color)
 	SetKind(kind Kind)
-	Show()
+	GetName()
 }
 type ChooseBag struct {
 	color Color
@@ -54,7 +54,7 @@ func (bag *ChooseBag) SetColor(color Color) {
 func (bag *ChooseBag) SetKind(kind Kind) {
 	bag.kind = kind
 }
-func (bag *ChooseBag) Show() {
+func (bag *ChooseBag) GetName() {
 	fmt.Println("color:", bag.color.Color(), "kind:", bag.kind.Kind())
 }
 func main() {
@@ -64,5 +64,5 @@ func main() {
 	bag = new(ChooseBag)
 	bag.SetColor(color)
 	bag.SetKind(kind)
-	bag.Show()
+	bag.GetName()
 }
